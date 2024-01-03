@@ -306,7 +306,13 @@
 		"project.json": {},
 		"main.cpp": {},
 		"My_settings.h": {},
-		"": {}
+		"": {},
+		"11025_8bit_mono.pcm": {},
+		"11025_8bit_mono.pk": {},
+		"11025_16bit_mono.pcm": {},
+		"11025_16bit_mono.pk": {},
+		"22050_16bit_mono.pcm": {},
+		"22050_16bit_mono.pk": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {
