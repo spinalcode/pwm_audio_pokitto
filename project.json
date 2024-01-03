@@ -297,20 +297,16 @@
 		"windows": "Desktop"
 	},
 	"meta": {
-		"": {},
-		"main.cpp": {},
-		"My_settings.h": {},
-		"project.json": {},
-		"Smile.h": {},
-		"Smile.png": {},
-		"!PWMaudio.elf": {},
 		"!PWMaudio.bin": {},
-		"22050_8bit.pcm": {},
-		"22050_8bit.pk": {},
+		"!PWMaudio.eeprom": {},
 		"22050_8bit_mono.pcm": {
 			"sdcard": true
 		},
-		"!PWMaudio.eeprom": {}
+		"!PWMaudio.elf": {},
+		"project.json": {},
+		"main.cpp": {},
+		"My_settings.h": {},
+		"": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {
