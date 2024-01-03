@@ -4,3 +4,5 @@
 #define PROJ_PERSISTENCE true
 #define PROJ_ENABLE_SOUND 0
 #define PROJ_EXT0_PWM_ENABLE
+#define PROJ_AUD_FREQ           22050
+#define PROJ_USE_PWM            1       // 0 = Use only DAC for output
