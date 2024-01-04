@@ -27,7 +27,7 @@ using PC = Pokitto::Core;
 using PD = Pokitto::Display;
 
 pwmout_t audiopwm;
-//pwmout_t* obj = &audiopwm;
+pwmout_t* obj = &audiopwm;
 
 
 void setVol(uint32_t v){
@@ -73,7 +73,8 @@ inline void writeDAC(unsigned char out) {
 
 inline void audioTimer32(void){
 	if (Chip_TIMER_MatchPending(LPC_TIMER32_0, 1)) {
-        pwmout_write(&audiopwm,(float)audioBuffer[audioOffset] / (float)255);
+        
+        pwmout_write(&audiopwm,(float)audioBuffer[audioOffset] / 255.0);
         //pwmout_write(&audiopwm,(float)random(255) / 255);
         //writeDAC( audioBuffer[audioOffset] );
         
@@ -109,6 +110,46 @@ void initTimer32(uint32_t sampleRate){
 	NVIC_EnableIRQ((IRQn_Type)my_TIMER_32_0_IRQn);
 }
 
+
+inline void audioTimer16(void){
+	if (Chip_TIMER_MatchPending(LPC_TIMER16_0, 1)) {
+        pwmout_write(&audiopwm,(float)audioBuffer[audioOffset] / (float)255);
+        //pwmout_write(&audiopwm,(float)random(255) / 255);
+        //writeDAC( audioBuffer[audioOffset] );
+        
+        if(++audioOffset == audioBufferSize*4){
+            audioOffset = 0;
+        }
+        currentBuffer = audioOffset/audioBufferSize;
+
+ 	    Chip_TIMER_ClearMatch(LPC_TIMER16_0, 1);
+    }
+}
+
+void initTimer16(uint32_t sampleRate){
+     /* Initialize 32-bit timer 0 clock */
+	Chip_TIMER_Init(LPC_TIMER16_0);
+    /* Timer rate is system clock rate */
+	uint32_t timerFreq = Chip_Clock_GetSystemClockRate();
+	/* Timer setup for match and interrupt at TICKRATE_HZ */
+	Chip_TIMER_Reset(LPC_TIMER16_0);
+	/* Enable both timers to generate interrupts when time matches */
+	Chip_TIMER_MatchEnableInt(LPC_TIMER16_0, 1);
+    /* Setup 32-bit timer's duration (32-bit match time) */
+	Chip_TIMER_SetMatch(LPC_TIMER16_0, 1, (timerFreq / sampleRate));
+	/* Setup both timers to restart when match occurs */
+	Chip_TIMER_ResetOnMatchEnable(LPC_TIMER16_0, 1);
+	/* Start both timers */
+	Chip_TIMER_Enable(LPC_TIMER16_0);
+	/* Clear both timers of any pending interrupts */
+	NVIC_ClearPendingIRQ((IRQn_Type)my_TIMER_16_0_IRQn);
+    /* Redirect IRQ vector - Jonne*/
+    NVIC_SetVector((IRQn_Type)my_TIMER_16_0_IRQn, (uint32_t)&audioTimer16);
+	/* Enable both timer interrupts */
+	NVIC_EnableIRQ((IRQn_Type)my_TIMER_16_0_IRQn);
+}
+
+
 inline void updateStream(){
     // Update music playing
     if( currentBuffer != completeBuffer){
@@ -137,6 +178,7 @@ int main() {
     /** AUDIO **/
     //#define POK_AUD_PIN P2_19
     //#define POK_AUD_PWM_US 15 //31 //Default value 31
+    //#define POK_BACKLIGHT_PIN P2_2
 
     pwmout_init(&audiopwm,POK_AUD_PIN);
     pwmout_period_us(&audiopwm,POK_AUD_PWM_US); //was 31us
@@ -166,9 +208,9 @@ int main() {
             if(!musicFile.read(&audioBuffer[bufferOffset[completeBuffer]], audioBufferSize)){
                 PD::print(0,8,"End File");
             }else {
-            //    char tempText[16];
-            //    sprintf(tempText,"C:%d",bufferCount++);
-            //    PD::print(0,16,tempText);
+                char tempText[16];
+                sprintf(tempText,"C:%d",bufferCount++);
+                PD::print(0,16,tempText);
             }
         }        
     }
