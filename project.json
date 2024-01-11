@@ -298,22 +298,26 @@
 	},
 	"meta": {
 		"!PWMaudio.bin": {},
-		"11025_16bit_mono.pcm": {},
-		"!PWMaudio.elf": {},
 		"!PWMaudio.eeprom": {},
-		"11025_8bit_mono.pcm": {},
+		"!PWMaudio.elf": {},
+		"11025_16bit_mono.pcm": {},
 		"11025_16bit_mono.pk": {},
+		"11025_8bit_mono.pcm": {},
 		"22050_16bit_mono.pcm": {},
+		"22050_16bit_mono.pk": {},
 		"11025_8bit_mono.pk": {},
+		"main.cpp": {},
+		"project.json": {},
 		"22050_8bit_mono.pcm": {
 			"sdcard": true
 		},
 		"22050_8bit_mono.pk": {},
 		"My_settings.h": {},
-		"main.cpp": {},
-		"22050_16bit_mono.pk": {},
-		"project.json": {},
-		"": {}
+		"": {},
+		"16_bit_11025.pcm": {},
+		"16_bit_22050.pcm": {},
+		"16_bit_11025.pk": {},
+		"16_bit_22050.pk": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {
